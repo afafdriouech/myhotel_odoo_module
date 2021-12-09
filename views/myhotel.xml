@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- ======chambre====== -->
+
+    <!-- chambre form view -->
+        <record model="ir.ui.view" id="chambre_form_view">
+            <field name="name">chambre.form</field>
+            <field name="model">myhotel.chambre</field>
+            <field name="arch" type="xml">
+                <form string="Chambre Form">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="categorie_id"/>
+                            <field name="etage_id"/>
+                            <field name="status"/>
+                            <field name="capacite"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+    <!-- chambre tree view -->
+    <record model="ir.ui.view" id="chambre_tree_view">
+            <field name="name">chambre.tree</field>
+            <field name="model">myhotel.chambre</field>
+            <field name="arch" type="xml">
+                <tree string="Chambre Tree">
+                    <field name="name"/>
+                    <field name="categorie_id"/>
+                    <field name="status"/>
+                    <field name="etage_id"/>
+                    <field name="capacite"/>
+                </tree>
+            </field>
+        </record>
+
+         <!-- chambre window action -->
+    <record model="ir.actions.act_window" id="chambres_list_action">
+            <field name="name">liste des chambres</field>
+            <field name="res_model">myhotel.chambre</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                 <p class="oe_view_nocontent_smiling_face">Creer la premiere chambre</p>
+            </field>
+        </record>
+
+        <!-- top level menu: no parent -->
+        <menuitem id="myhotel_menu" name="My hotel"/>
+
+        <!-- A first level in the left side menu is needed before using action= attribute -->
+        <menuitem id="chambre_menu" name="Chambres" parent="myhotel_menu"/>
+
+        <!-- the following menuitem should appear *after* its parent chambre_menu and *after* its action listechambres_list_action -->
+        <menuitem id="liste_chambres_menu" name="liste des chambres" parent="chambre_menu" action="chambres_list_action"/>
+
+
+
+    <!-- ======categorie====== -->
+
+    <!-- categorie form view -->
+        <record model="ir.ui.view" id="categorie_form_view">
+            <field name="name">categorie.form</field>
+            <field name="model">myhotel.categorie</field>
+            <field name="arch" type="xml">
+                <form string="Categorie Form">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <notebook>
+                            <page string="Description">
+                                <field name="description"/>
+                                <field name="confort_ids"/>
+                            </page>
+                            <page string="Chambres">
+                                <field name="chambre_ids">
+                                    <tree string="toutes les chambres dans cette categorie">
+                                        <field name="name"/>
+                                        <field name="status"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+     <!-- categorie window action -->
+    <record model="ir.actions.act_window" id="categorie_list_action">
+            <field name="name">Categories</field>
+            <field name="res_model">myhotel.categorie</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                 <p class="oe_view_nocontent_smiling_face">Creer la premiere categorie</p>
+            </field>
+        </record>
+
+    <menuitem id="categorie_menu" name="Categories" parent="chambre_menu" action="categorie_list_action"/>
+
+
+    <!-- ======confort====== -->
+
+    <!-- confort form view -->
+        <record model="ir.ui.view" id="confort_form_view">
+            <field name="name">confort.form</field>
+            <field name="model">myhotel.confort</field>
+            <field name="arch" type="xml">
+                <form string="Confort Form">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+    <!-- confort window action -->
+    <record model="ir.actions.act_window" id="confort_list_action">
+            <field name="name">Conforts</field>
+            <field name="res_model">myhotel.confort</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                 <p class="oe_view_nocontent_smiling_face">Creer le premier confort</p>
+            </field>
+        </record>
+
+    <menuitem id="confort_menu" name="Conforts" parent="chambre_menu" action="confort_list_action"/>
+
+
+    <!-- ======etages====== -->
+
+
+    <!-- etage form view -->
+        <record model="ir.ui.view" id="confort_form_view">
+            <field name="name">etage.form</field>
+            <field name="model">myhotel.etage</field>
+            <field name="arch" type="xml">
+                <form string="Etage Form">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <notebook>
+                            <page string="Chambres">
+                                <field name="chambre_ids"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+    <!-- etage window action -->
+    <record model="ir.actions.act_window" id="etage_list_action">
+            <field name="name">Etages</field>
+            <field name="res_model">myhotel.etage</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                 <p class="oe_view_nocontent_smiling_face">Creer le premier etage</p>
+            </field>
+        </record>
+
+    <menuitem id="etage_menu" name="Etages" parent="chambre_menu" action="etage_list_action"/>
+
+
+    <!-- ======services====== -->
+
+     <!-- service form view -->
+        <record model="ir.ui.view" id="service_form_view">
+            <field name="name">service.form</field>
+            <field name="model">myhotel.service</field>
+            <field name="arch" type="xml">
+                <form string="Service Form">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="prix"/>
+                            <field name="description"/>
+                            <field name="product_id"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+     <!-- service window action -->
+    <record model="ir.actions.act_window" id="service_list_action">
+            <field name="name">Services</field>
+            <field name="res_model">myhotel.service</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                 <p class="oe_view_nocontent_smiling_face">Creer le premier service</p>
+            </field>
+        </record>
+
+    <menuitem id="service_menu" name="Service" parent="myhotel_menu"/>
+    <menuitem id="listeservice_menu" name="Liste services" parent="service_menu" action="service_list_action"/>
+
+</odoo>

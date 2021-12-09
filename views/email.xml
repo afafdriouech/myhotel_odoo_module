@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- My email template for reservation -->
+    <record id="mail_template_reservation" model="mail.template">
+        <field name="name">Reservation Email</field>
+        <field name="email_from">${(object.company_id.partner_id.email or'')}</field>
+        <!-- ${(object.company_id.partner_id.email -->
+        <field name="subject">Email de confirmation de reservation</field>
+        <field name="partner_to">${(object.client_id.id or '')}</field>
+        <field name="model_id" ref="model_myhotel_reservation" />
+        <field name="auto_delete" eval="True" />
+        <field name="body_html">
+            <![CDATA[
+            <p>Bonjour <strong>${object.client_id.name}</strong>,</p>
+            <p>Cet email est pour confirmer votre reservation dans notre hotel.
+               Tout d'abord nous tenons a vous remercier d'avoir choisi nos services.
+               Vous trouvez les details de votre reservation passer a la date <strong>${object.date_order}</strong> ci dessous:
+            </p>
+            &nbsp;&nbsp;<strong>Details :</strong><br/>
+            <p style="border-left: 1px solid #8e0000; margin-left: 30px;">
+            &nbsp;&nbsp;Nom du client : <strong>${object.client_id.name}</strong><br />
+            &nbsp;&nbsp;Date d'arrivée : <strong>${object.checkin}</strong><br />
+            &nbsp;&nbsp;Date départ : <strong>${object.checkout}</strong><br />
+            &nbsp;&nbsp;Numero de Reservation : <strong>${object.reservation_no}</strong><br />
+            &nbsp;&nbsp;Nombre de personnes : <strong>${object.adults}</strong> adultes et <strong>${object.children}</strong> enfants<br />
+            </p>
+            <br/>
+           <p>
+           En cas d'un changement dans votre programme,merci de nous tenir au courant.
+           Et en cas d'empechement vous pouvez annuler votre reservation,en nous envoyant un mail durant les 24 heures
+           qui précédent le jour de votre arrivée.
+           </p>
+           <br />
+           <strong>Veuillez agréer, Madame, Monsieur, mes salutations distinguées.<strong>,<br />
+           <br />
+           <!-- <strong>Reservations Team <strong><br /> -->
+         ]]>
+        </field>
+    </record>
+
+</odoo>

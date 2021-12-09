@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <odoo>
+
+        <!-- Add reservations to client view -->
+        <record model="ir.ui.view" id="client_form_view">
+            <field name="name">Client</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <notebook position="inside">
+                    <page string="Mes reservations">
+                        <group>
+                            <field name="reservation_ids"/>
+                        </group>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+
+    <record model="ir.actions.act_window" id="client_list_action">
+            <field name="name">Clients</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="serviceclient_menu" name="Service client" parent="myhotel_menu"/>
+        <menuitem id="client_menu" name="Clients" parent="serviceclient_menu" action="client_list_action"/>
+
+
+    <!-- =========Reclamations========= -->
+        <record model="ir.actions.act_window" id="reclamation_list_action">
+            <field name="name">Reclamations clients</field>
+            <field name="res_model">myhotel.reclamation</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="reclamation_menu" name="Reclamations Clients" parent="serviceclient_menu" action="reclamation_list_action"/>
+
+
+</odoo>

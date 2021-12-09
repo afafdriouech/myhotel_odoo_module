@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ======== Reservation ======== -->
+    <!-- Form view of hotel reservation -->
+    <record id="view_hotel_reservation_form" model="ir.ui.view">
+        <field name="name">myhotel.reservation.form</field>
+        <field name="model">myhotel.reservation</field>
+        <field name="arch" type="xml">
+            <form string="Reservation">
+                 <header>
+                    <button name="send_reservation_mail" type="object"
+                        string="Send Reservation Email" states="confirm" class="oe_highlight" />
+                    <button name="confirmed_reservation" string="Confirm"
+                        states="draft" class="oe_highlight" type="object" />
+                     <button name="create_folio" string="Create Folio" states="confirm"
+                        class="oe_highlight" type="object" />
+                    <button name="cancel_reservation" string="Cancel Reservation"
+                        states="draft,confirm" class="oe_highlight" type="object" />
+                    <button name="set_to_draft_reservation" string="Set to Draft"
+                        states="cancel" class="oe_highlight" type="object" />
+                    <field name="state" widget="statusbar" />
+                </header>
+                <sheet>
+                    <label string="Reservation No" />
+                    <h1>
+                        <field name="reservation_no" class="oe_inline" />
+                    </h1>
+                    <group>
+                        <group colspan="4">
+                            <field name="date_order" />
+                        </group>
+                        <group >
+                            <field name="client_id" />
+                        </group>
+                        <separator />
+                        <group colspan="4" col="4">
+                            <field name="checkin" />
+                            <field name="checkout" />
+                            <field name="adults" required="1" />
+                            <field name="children" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string='ligne de reservation'>
+                            <field name="reservation_line" colspan="4" nolabel="1">
+                                <form string="ligne de reservation">
+                                    <separator string="Categories des chambres" />
+                                    <field name="name" invisible="1" />
+                                    <field name="categ_id" colspan="4" nolabel="1" />
+                                    <newline />
+                                    <separator string="Selectionnez la chambre" />
+                                    <field name="reserve" colspan="4" string="Numero du chambre" nolabel="1" />
+                                </form>
+                                <tree string="ligne de reservation">
+                                    <field name="reserve" string="Chambres" widget="many2many_tags" />
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree view of hotel reservation -->
+
+    <record model="ir.ui.view" id="reservation_tree_view">
+            <field name="name">reservation.tree</field>
+            <field name="model">myhotel.reservation</field>
+            <field name="arch" type="xml">
+                <tree string="Reservation" colors="blue:state == 'draft';gray:state == 'done';lightgray:state == 'cancel';">
+                    <field name="reservation_no" class="oe_inline"/>
+                    <field name="date_order"/>
+                    <field name="checkin"/>
+                    <field name="checkout"/>
+                    <field name="state" />
+                </tree>
+            </field>
+        </record>
+
+     <!-- Graph view of hotel reservation -->
+    <record id="view_hotel_reservation_graph" model="ir.ui.view">
+        <field name="name">reservation.graph</field>
+        <field name="model">myhotel.reservation</field>
+        <field name="arch" type="xml">
+            <graph string="Reservation" type="pie">
+                <field name="state" />
+                <field name="reservation_no" />
+            </graph>
+        </field>
+    </record>
+
+
+      <!-- Calendar view of hotel reservation -->
+    <record id="hotel_calendar_view" model="ir.ui.view">
+        <field name="name">Reservation chambre</field>
+        <field name="model">myhotel.reservation</field>
+        <field name="priority" eval="2" />
+        <field name="arch" type="xml">
+            <calendar string="Current Reservation" date_start="checkin" date_stop="checkout" color="client_id">
+                <field name="client_id" />
+            </calendar>
+        </field>
+    </record>
+
+
+     <!-- Action of hotel reservation -->
+    <record id="reservation_list_action" model="ir.actions.act_window">
+        <field name="name">Reservations</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">myhotel.reservation</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,graph,calendar</field>
+    </record>
+
+    <menuitem id="reservation_menu" name="Reservation" parent="myhotel_menu"/>
+
+     <menuitem id="listereservations_menu" name="reservations" parent="reservation_menu" action="reservation_list_action" sequence="10"/>
+
+    <!-- =====reservation no sequence==== -->
+
+     <record id="seq_hotel_reservation" model="ir.sequence">
+        <field name="name">Hotel Reservation</field>
+        <field name="code">myhotel.reservation</field>
+        <field name="padding">4</field>
+    </record>
+
+
+
+
+     <!-- ==============planning des reservations======== -->
+
+
+    <record id="room_reservation_summary_form_view" model="ir.ui.view">
+        <field name="name">planning.form</field>
+        <field name="model">myhotel.planning</field>
+        <field name="arch" type="xml">
+            <form string="Planning des reservation">
+                <header>
+                    <separator string="Planning des reservation" colspan="4" />
+                </header>
+                <sheet>
+                     <group colspan="4" col="4">
+                         <div>
+                             <label for="date_from" string="Periode du planning" />
+                             <field name="date_from" class="oe_inline" />
+                             á
+                             <field name="date_to" class="oe_inline" />
+                         </div>
+                     </group>
+                     <notebook>
+                         <page string="Planning chambre">
+                            <field name="summary_header" colspan="4" invisible="1"/>
+                            <field name="room_summary" colspan="4" widget="Room_Reservation" />
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+     <!-- ===== quick room reservation ===== -->
+    <!-- Form view of quick room reservation -->
+    <record id="quick_room_reservation_form_view" model="ir.ui.view">
+        <field name="name">quick.room.reservation.form</field>
+        <field name="model">quick.room.reservation</field>
+        <field name="arch" type="xml">
+            <form string="Quick Reservation">
+                <header>
+                    <separator string="Quick Reservation" colspan="4" />
+                </header>
+                <sheet>
+                    <group colspan="4" col="4">
+                        <field name="client_id" />
+                        <field name="room_id" />
+                        <!-- readonly="1" -->
+                        <field name="check_in" />
+                        <field name="check_out" />
+                        <field name="adults" />
+                    </group>
+                </sheet>
+                <footer>
+                    <group colspan="2" col="2">
+                        <button string="Enregistrer" name="room_reserve" type="object" class="btn-primary" />
+                        <button string="Annuler" special="cancel" class="btn-primary" />
+                    </group>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+<!--    <act_window id="launch_session_wizard"
+                    name="Quick Room Reservation"
+                    src_model="myhotel.planning"
+                    res_model="quick.room.reservation"
+                    view_mode="form"
+                    target="new"
+                    key2="client_action_multi"/> -->
+
+
+     <!-- Action for Room Planning -->
+    <record id="action_hotel_reservation_summary" model="ir.actions.act_window">
+        <field name="name">Planning reservations</field>
+        <field name="res_model">myhotel.planning</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+    </record>
+
+
+     <menuitem id="menu_action_planning" name="Planning reservations"
+        action="action_hotel_reservation_summary" parent="reservation_menu" sequence="20" />
+
+
+</odoo>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--=== Hotel Folio ==== -->
+    <!-- Form view of hotel folio -->
+
+ <!-- Tree view of hotel folio -->
+    <record id="view_hotel_folio1_tree" model="ir.ui.view">
+        <field name="name">hotel.folio.tree</field>
+        <field name="model">hotel.folio</field>
+        <field name="arch" type="xml">
+            <tree string="Hotel Folio" colors="blue:state == 'draft';gray:state == 'done'">
+                <field name="checkin_date" />
+                <field name="checkout_date" />
+                <field name="name" />
+               <!-- <field name="client_id" /> -->
+                <field name="date_order" />
+                <field name="state" />
+                <field name="amount_total" sum="Total amount" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action for hotel folio -->
+    <record id="open_hotel_folio1_form_tree_all" model="ir.actions.act_window">
+        <field name="name">Generate Folio</field>
+        <field name="res_model">myhotel.folio</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,graph</field>
+        <field name="context">{'folio': True}</field>
+    </record>
+
+    <menuitem id="menu_all_folio" name="Folio" parent="myhotel_menu" sequence="4" />
+    <menuitem name="Generate Folio" id="menu_open_hotel_folio1_form_tree_all"
+        action="open_hotel_folio1_form_tree_all" sequence="5" parent="menu_all_folio" />
+</odoo>
